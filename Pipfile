@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+jinja2 = "==3.1.6"
+python-multipart = "==0.0.20"
+uvicorn = {extras = ["standard"], version = "==0.34.2"}
+fastapi = "*"
+sqlalchemy = "==2.1.0rc1"
+
+[dev-packages]
+
+[requires]
+python_version = "3.14"
+python_full_version = "3.14.5"

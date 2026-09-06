@@ -1,0 +1,50 @@
+{% extends "base.html" %}{% block content %}
+<div class="card"><h2>Battery #{{"%03d"|format(b.id)}}</h2>
+    <form method="post" action="/battery/{{b.id}}/update">
+        <div class="grid">
+            <input name="chemistry" value="{{b.chemistry}}" required>
+            <input name="brand" value="{{b.brand}}" placeholder="Brand">
+            <input name="size" value="{{b.size}}" placeholder="Size (AA, AAA, ...)">
+            <input name="capacity_rated" type="number" value="{{b.capacity_rated or ''}}" placeholder="Rated capacity mAh">
+            <input name="purchase_date" type="date" value="{{b.purchase_date or ''}}">
+            <input name="notes" value="{{b.notes}}" placeholder="Notes"></div>
+        <button>Save battery</button>
+    </form>
+</div>
+<div class="card"><h2>Log action</h2>
+    <form method="post" action="/battery/{{b.id}}/event">
+        <div class="grid">
+            <select name="event_type">
+                {% for x in event_types %}
+                    <option>{{x}}</option>
+                {% endfor %}
+            </select>
+            <input name="event_date" type="date">
+            <input name="capacity_measured" type="number" step="0.1" placeholder="Capacity measured mAh">
+            <input name="location" placeholder="Location / device">
+            <input name="notes" placeholder="Notes">
+        </div>
+        <button>Log action</button>
+    </form>
+</div>
+<div class="card"><h2>History</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Action</th>
+            <th>Capacity measured</th>
+            <th>Location</th>
+            <th>Notes</th>
+        </tr>
+        {% for e in events %}
+        <tr>
+            <td>{{e.event_date.strftime("%Y-%m-%d")}}</td>
+            <td>{{e.event_type}}</td>
+            <td>{% if e.capacity_measured is not none %}{{e.capacity_measured}}{% endif %}</td>
+            <td>{{e.location}}</td>
+            <td>{{e.notes}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

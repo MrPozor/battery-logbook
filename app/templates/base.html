@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Battery Logbook</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f6f7f9;
+            color: #222
+        }
+
+        a {
+            color: #1558b0;
+            text-decoration: none
+        }
+
+        h1 {
+            margin-bottom: 4px
+        }
+
+        .card {
+            background: white;
+            padding: 18px;
+            margin: 14px 0;
+            border-radius: 10px;
+            box-shadow: 0 1px 4px #ddd
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th, td {
+            text-align: left;
+            padding: 9px;
+            border-bottom: 1px solid #eee
+        }
+
+        input, select, textarea, button {
+            font: inherit;
+            padding: 8px;
+            margin: 3px;
+            border: 1px solid #bbb;
+            border-radius: 6px
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px
+        }
+
+        .muted {
+            color: #666
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #eee
+        }
+
+        @media (max-width: 700px) {
+            table {
+                font-size: .9em
+            }
+
+            .hide-mobile {
+                display: none
+            }
+        }
+    </style>
+</head>
+<body><a href="/"><h1>🔋 Battery Logbook</h1></a>{% block content %}{% endblock %}</body>
+</html>

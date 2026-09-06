@@ -1,0 +1,67 @@
+{% extends "base.html" %}{% block content %}
+<div class="card">
+    <form><input name="q" value="{{q}}" placeholder="Search ID, brand, model, use">
+        <button>Search</button>
+    </form>
+</div>
+<div class="card"><h2>Batteries ({{batteries|length}})</h2>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Chemistry</th>
+            <th>Battery</th>
+            <th>Health</th>
+            <th>Location</th>
+        </tr>
+        {% for b in batteries %}
+        <tr>
+            <td><a href="/battery/{{b.id}}"><b>{{"%03d"|format(b.id)}}</b></a></td>
+            <td>{{b.chemistry}}</td>
+            <td>{{b.brand}} {{b.size}}{% if b.capacity_rated %} ({{b.capacity_rated|int}} mAh){% endif %}</td>
+            <td>{% if b.health is not none %}
+                    {{ "%.0f"|format(b.health) }}%
+                {% else %}
+                    —
+                {% endif %}</td>
+            <td>{{b.location or "—"}}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="5">No batteries yet.</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="card"><h2>Add battery</h2>
+    <form method="post" action="/battery/new">
+        <div class="grid">
+            <input name="chemistry" placeholder="Chemistry (e.g. NiMH)" required>
+            <input name="brand" placeholder="Brand">
+            <input name="size" placeholder="Size (AA, AAA, ...)">
+            <input name="capacity_rated" type="number" step="1" placeholder="Rated capacity mAh">
+            <input name="purchase_date" type="date">
+            <input name="location" placeholder="Current location / device">
+            <input name="notes" placeholder="Notes">
+        </div>
+        <button>Add battery</button>
+    </form>
+</div>
+<div class="card"><h2>Recent activity</h2>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Battery</th>
+            <th>Action</th>
+            <th>Notes</th>
+        </tr>
+        {% for e in recent %}
+        <tr>
+            <td>{{e.event_date.strftime("%Y-%m-%d")}}</td>
+            <td><a href="/battery/{{e.battery_id}}">#{{"%03d"|format(e.battery_id)}}</a></td>
+            <td>{{e.event_type}}{% if e.capacity_measured is not none %} — {{e.capacity_measured}}{% endif %}</td>
+            <td>{{e.notes}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
