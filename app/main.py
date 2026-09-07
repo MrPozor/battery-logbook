@@ -85,17 +85,27 @@ def home(request: Request, q: str = ""):
             .limit(10)
         ).all()
 
-        return templates.TemplateResponse("index.html", {"request":request,"batteries":batteries,
-            "recent":recent,"q":q,"event_types":EVENT_TYPES})
+        return templates.TemplateResponse(name="index.html",
+                                          request=request,
+                                          context={"recent":recent,
+                                                   "batteries":batteries,
+                                                   "q":q,
+                                                   "event_types":EVENT_TYPES}
+                                          )
+
 
 @app.get("/battery/{bid}", response_class=HTMLResponse)
 def battery(request: Request, bid: int):
     with Session(engine) as s:
-        b=s.get(Battery,bid)
+        b = s.get(Battery,bid)
         if not b: raise HTTPException(404)
         events=s.scalars(select(Event).where(Event.battery_id==bid).order_by(Event.event_date.desc())).all()
-        return templates.TemplateResponse("battery.html", {"request":request,"b":b,"events":events,
-            "event_types":EVENT_TYPES})
+        return templates.TemplateResponse(name="battery.html",
+                                          request=request,
+                                          context = {"b":b,
+                                                     "events":events,
+                                                     "event_types":EVENT_TYPES}
+                                          )
 
 @app.post("/battery/new")
 def new_battery(chemistry=Form(...), brand=Form(""), size=Form(""), capacity_rated=Form(""),
